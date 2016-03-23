@@ -25,7 +25,7 @@ for i in images videos; do
   #
   j=1  # Line number
   dest_dir="data/$i/0/"
-  rm $dest_dir/*
+  rm -f $dest_dir/*
   while test `ls $dest_dir|wc -l` -lt 5; do
     id=`sed "${j}q;d" sources/$i/internetarchive.id.txt`
     mkdir -p tmp

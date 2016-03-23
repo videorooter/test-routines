@@ -22,8 +22,7 @@ for line in fileinput.input():
   data = response.json()
 
   for i in data['files']:
-     if i['source'] == 'original' and i['format'] in wanted_formats
-        and i['private'] != 'true':
+     if i['source'] == 'original' and i['format'] in wanted_formats and ('private' not in i or i['private'] != 'true'):
         url = 'http://%s%s/%s' % (data['server'], data['dir'], i['name'])
         try:
            response_dl = urlopen(url)
