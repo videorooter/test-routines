@@ -13,14 +13,14 @@ cd /compile
 git clone $1
 cd *
 
-# echo "<h3>Repository: $1 (branch $2)</h3>"
-git checkout $2 > /dev/null
+echo "<h3>Repository: $1 (branch $2)</h3>"
+git checkout $2
 if test -f waf; then
-  (./waf configure;./waf) > /dev/null
+  (./waf configure;./waf)
 elif test -f Makefile; then
-  make > /dev/null
+  make
 elif test -f prepare; then
-  (./prepare; make) > /dev/null
+  (./prepare; make)
 else
   echo "Don't know how to compile $branch"
   exit 1
