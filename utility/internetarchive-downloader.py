@@ -29,7 +29,8 @@ for line in fileinput.input():
   except:
      continue
   data = response.json()
-
+  if not 'files' in data:
+     continue
   for i in data['files']:
      # We only want original works in the format we require. They should
      # not be set to private, and the filename should not contain additional
@@ -51,7 +52,10 @@ for line in fileinput.input():
            else:
               break
            with open(filename, 'b+w') as f:
-             f.write(response_dl.read())
+             while True:
+               data = response_dl.read(8192)
+               if not data: break
+               f.write(data)
            print("OK: %s (as %s, format %s)" % (id, i['name'], i['format']))
            num_files[format] += 1
            break

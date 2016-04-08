@@ -12,7 +12,7 @@ _EOL_
 sleep 5
 
 echo "`date` Removing leftover information"
-rm -r data/
+#rm -r data/
 
 echo "`date` Creating source directories in data/"
 mkdir -p data/{movies,image}/0
