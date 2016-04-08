@@ -13,7 +13,7 @@ cd /compile
 git clone $1
 cd *
 
-echo "<h3>Repository: $1 (branch $2)</h3>"
+# echo "<h3>Repository: $1 (branch $2)</h3>"
 git checkout $2 > /dev/null 2>&1
 if test -f waf; then
   (./waf configure;./waf) > /dev/null 2>&1
