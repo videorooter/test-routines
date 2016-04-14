@@ -8,22 +8,34 @@
 # The script can expect /data to hold the data directory from the host.
 #
 
-mkdir -p /compile
-cd /compile
-git clone $1
-cd *
+cd /src/*
+source videorooter.conf
 
 echo "<h3>Repository: $1 (branch $2)</h3>"
-git checkout $2
-if test -f waf; then
-  (./waf configure;./waf)
-elif test -f Makefile; then
-  make
-elif test -f prepare; then
-  (./prepare; make)
-else
-  echo "Don't know how to compile $branch"
-  exit 1
-fi
 
-find /data - name "*.jpg" | xargs grep build/blockhash 
+compile
+
+if test $images -eq 1; then
+  #
+  # For each file in the large data set of images, we compile the
+  # hash and add it to a temporary table.
+  #
+  find /data/image/lg -type f | while read img; do
+    calc image $img >> $$.in
+  done
+
+  #
+  # Run the actual crosscompare for false positives and output
+  # the results.
+  #
+  cat $$.in | /util/crosscompare.py --max 15 --step 1
+
+  rm -f $$.in
+
+  for img in `find /data/image/[1-9]* -maxdepth 3 -iregex '\(.*png\|.*jpg\)'|sort -f`; do  
+    calc image $img >> $$.in
+  done
+
+  cat $$.in|/util/makecsv.py
+  rm -f $$.in
+fi

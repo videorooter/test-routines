@@ -48,7 +48,7 @@ for line in fileinput.input():
               (base, ext) = i['name'].split('.')
               filename = "%s/%s/0/%03d.%s" % (outputdir, format, num_files[format], ext)
            elif num_files[format] < max_total_files:
-              filename = "%s/%s/lg/%s" % (outputdir, format, i['name'])
+              filename = "%s/%s/lg/%s" % (outputdir, format, i['name'].replace(' ', '_')
            else:
               break
            with open(filename, 'b+w') as f:
