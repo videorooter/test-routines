@@ -26,3 +26,4 @@ else
   exit 1
 fi
 
+find /data - name "*.jpg" | xargs grep build/blockhash 
