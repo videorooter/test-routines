@@ -1,0 +1,4 @@
+[tests]
+username=<username>
+password=<password>
+cachepath=data/cache

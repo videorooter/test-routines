@@ -11,7 +11,9 @@
 cd /src/*
 source videorooter.conf
 
-echo "<h3>Repository: $1 (branch $2)</h3>"
+logfile=/src/output.html
+
+echo "<h3>Repository: $1 (branch $2)</h3>" > $logfile
 
 compile
 
@@ -28,14 +30,14 @@ if test $images -eq 1; then
   # Run the actual crosscompare for false positives and output
   # the results.
   #
-  cat $$.in | /util/crosscompare.py --max 15 --step 1
+  cat $$.in | /util/crosscompare.py --max 15 --step 1 >> $logfile
 
   rm -f $$.in
 
-  for img in `find /data/image/[1-9]* -maxdepth 3 -iregex '\(.*png\|.*jpg\)'|sort -f`; do  
+  for img in `find /data/image/[0-9]* -maxdepth 3 -iregex '\(.*png\|.*jpg\)'|sort -f`; do  
     calc image $img >> $$.in
   done
 
-  cat $$.in|/util/makecsv.py
+  cat $$.in|/util/makecsv.py >> $logfile
   rm -f $$.in
 fi
