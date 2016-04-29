@@ -26,11 +26,13 @@ for d in data:
     if testname == "0":
         original[filename] = bytearray(base64.b16decode(h.strip().upper()))
     else:
-        table[filename][testname] = hammingdistance(original[filename], bytearray(base64.b16decode(h.strip().upper())))
+        table[filename][int(testname)] = hammingdistance(original[filename], bytearray(base64.b16decode(h.strip().upper())))
 
+# Cols is the individual file
 cols = table.keys()
 cols.sort()
 
+# Rows is the test name
 rows = table['000'].keys()
 rows.sort()
 
@@ -43,7 +45,7 @@ for i in range(0, 16):
   verbatim[i] = 0
   deriv[i] = 0
 
-for row in rows[:13]:
+for row in range(1,14):
     for col in cols:
         total += 1
         value = table[col][row]
@@ -53,7 +55,7 @@ for row in rows[:13]:
 
 # Second get statistics for row 14-25, ie all non-verbatim transformations
 total_s = 0
-for row in rows[13:]:
+for row in range(14,26):
     for col in cols:
         total_s += 1
         value = table[col][row]

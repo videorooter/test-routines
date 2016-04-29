@@ -45,10 +45,10 @@ input.tabhandle:checked + label.filled + .tabcontent {
 input.tabhandle + label.filled { color: #008;}
 input.tabhandle + label::before { content: '\25b9 \00a0';}
 input.tabhandle + label.filled::before { content: '\25b8 \00a0'; color: initial;}
-input.tabhandle + label.filled::after { content: ', more...';}
+input.tabhandle + label.filled::after { content: '.. more...';}
 input.tabhandle:checked + label::before { content: '\25b9 \00a0';}
 input.tabhandle:checked + label.filled::before { content: '\25be \00a0'; color: initial;}
-input.tabhandle:checked + label.filled::after { content: ', less...';}
+input.tabhandle:checked + label.filled::after { content: '.. less...';}
 
 h1 {
   text-align: center;
@@ -97,7 +97,7 @@ label  {
 <dl class="buildinfo">
   <dt>Last run: </dt><dd>$runtime</dd>
 </dl>
-<h2>Information</h2>
+<h2>Information (for Video algorithms)</h2>
 <input type="checkbox" class="tabhandle" id="overview_tab" 
 ><label class="filled" for="overview_tab"></label>
 <div class="tabcontent">
@@ -149,6 +149,12 @@ ve: two videos that are not the same, but are deemed to be the same by the algor
 ithm.</p>
 <p>The false positive rate is the likelihood that any single video
 evaluated will result in one or more false positive matches.</p>
+</div>
+<h2>Information (for Image algorithms)</h2>
+<input type="checkbox" class="tabhandle" id="overviewi_tab" 
+><label class="filled" for="overviewi_tab"></label>
+<div class="tabcontent">
+<p>Nothing here, you can read the information for video algorithms which is mostly the same. :-) And then help to update this section!</p>
 </div>
 $content
 </body>

@@ -4,7 +4,9 @@ This is the main test script which identifies all forks of a particular
 project (or several projects) and runs the test algorithms on each fork.
 """
 import fileinput
+import fcntl
 import json
+import sys
 import requests
 import ConfigParser
 import os.path
@@ -13,6 +15,12 @@ import shutil
 from pygithub3 import Github
 from subprocess import call
 from string import Template
+
+flock = open('.videorooter.lock', 'w')
+try:
+   fcntl.lockf(flock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+except IOError:
+   sys.exit(0)
 
 config = ConfigParser.ConfigParser()
 config.read('tests.conf')
@@ -145,3 +153,5 @@ f = open("%s/index.html" % config.get('tests', 'outpath'), 'w')
 f.write(src.substitute(subst))
 f.close()
 template.close()
+
+flock.close()
