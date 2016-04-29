@@ -8,9 +8,11 @@ import json
 import requests
 import ConfigParser
 import os.path
+import datetime
 import shutil
 from pygithub3 import Github
 from subprocess import call
+from string import Template
 
 config = ConfigParser.ConfigParser()
 config.read('tests.conf')
@@ -88,3 +90,58 @@ for i in derived_branches:
       if not res:
          shutil.copyfile('src/output.html', "%s/%s" % (config.get('tests', 'cachepath'), i['sha']))
 
+# 
+# Go through all branches again, get statistics from the output files.
+# The "best" result is the one with highest spread at the same threshold,
+# ie. calculating accuracy minus false positives. A higher spread means
+# a high accuracy and low false positives.
+#
+# This is ugly, isn't there a better way to parse formatted strings?
+#
+content = ""
+for i in derived_branches:
+  if i['base'] == 'videorooter/algo-repository-template':
+    continue
+  if os.path.isfile("%s/%s" % (config.get('tests', 'cachepath'), i['sha'])):
+    f = open("%s/%s" % (config.get('tests', 'cachepath'), i['sha']))
+    acc = {}
+    cc = {}
+    best_result = 0
+    best_t = 0
+    for line in f:
+      if 'ACC' in line:
+         l = line.split()
+         acc[int(l[1].strip('t').strip('='))] = float(l[2].strip('%'))
+      elif 'CC' in line:
+         l = line.split()
+         cc[int(l[1].strip('t').strip('='))] = float(l[2].strip('%'))
+    for j in acc:
+       if (acc[j]-cc[j]) > best_result:
+          best_result = acc[j]-cc[j]
+          best_t = j
+    f.seek(0)
+
+    template = open('tmpl/test.html.tmpl')
+    src = Template(template.read())
+    subst = { 'testname': "%s/%s" % (i['base'], i['branch']),
+              'id': i['sha'], 
+              'result': best_result,
+              't': best_t,
+              'output': f.read() }
+    f.close()
+    i['output'] = src.substitute(subst)
+    content += i['output']
+    template.close()
+
+#
+# Now we do the actual output!
+#
+template = open('tmpl/index.html.tmpl')
+src = Template(template.read())
+subst = { 'runtime':  datetime.datetime.utcnow(),
+          'content': content }
+
+f = open("%s/index.html" % config.get('tests', 'outpath'), 'w')
+f.write(src.substitute(subst))
+f.close()
+template.close()

@@ -61,6 +61,8 @@ for row in rows[13:]:
            if (value <= i):
               deriv[i] += 1
 
+print("\n * Accuracy at different thresholds\n")
+
 for i in range(0, 16):
-   print " t=%d  Verbatim: %.2f%% Derivatives: %.2f%%" % (i, verbatim[i]*100/(total), deriv[i]*100/(total_s))
+   print "ACC t=%d %.2f%% (verbatim copies, derivatives at %.2f%%)" % (i, verbatim[i]*100/(total), deriv[i]*100/(total_s))
 

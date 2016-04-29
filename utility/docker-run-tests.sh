@@ -13,8 +13,6 @@ source videorooter.conf
 
 logfile=/src/output.html
 
-echo "<h3>Repository: $1 (branch $2)</h3>" > $logfile
-
 compile
 
 if test $images -eq 1; then

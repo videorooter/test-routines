@@ -1,0 +1,155 @@
+<html><head><title>Videorooter algorithm test results</title>
+    <style type="text/css">
+    <!--
+body { width: 100%; margin: 0; padding: 1ex; }
+* {
+  margin: auto auto;
+  box-sizing: border-box;
+  transition: all .2s linear;
+}
+
+dl {
+  display: block;
+  width: 60%;
+  min-width: 320px;
+}
+dt, dd {
+  display: inline-block;
+  padding: 0 1ex .5ex 0;
+  margin: 0;
+  border-width: 1px;
+  border-style: solid none none none;
+  vertical-align: top;
+}
+dt {
+  width: 40%;
+  font-weight: bold;
+}
+dd { width: 60%; }
+
+input.tabhandle { display: none;}
+input.tabhandle + label + .tabcontent {
+  width: 75%; min-width: 300px;
+  min-height: 1px; max-height: 1px;
+  overflow: hidden;
+  padding-top: 0; padding-bottom: 0;
+  margin-top: 0; margin-bottom: 0;
+  border-style: none none solid none;
+}
+input.tabhandle:checked + label.filled + .tabcontent {
+  width: 100%;
+  min-height: 1px; max-height: 110em;
+  border-style: dashed solid solid solid;
+  overflow: auto;
+}
+input.tabhandle + label.filled { color: #008;}
+input.tabhandle + label::before { content: '\25b9 \00a0';}
+input.tabhandle + label.filled::before { content: '\25b8 \00a0'; color: initial;}
+input.tabhandle + label.filled::after { content: ', more...';}
+input.tabhandle:checked + label::before { content: '\25b9 \00a0';}
+input.tabhandle:checked + label.filled::before { content: '\25be \00a0'; color: initial;}
+input.tabhandle:checked + label.filled::after { content: ', less...';}
+
+h1 {
+  text-align: center;
+  border-width: 1px;
+  border-style: none none solid none;
+  margin-bottom: 1ex;
+}
+h2, h3, label {
+  display: inline-block;
+  font-size: 1em;
+  line-height: 1em;
+  color: #000;
+  background-color: #DDF;
+  border-color: #000; border-width: 1px;
+  padding: .5ex 1ex 1ex 1ex;
+  margin: .5em 0 0 0;
+}
+h2, h3 {
+  width: 15%; min-width: 350px;
+  font-weight: bold;
+  border-style: solid none none solid;
+  border-radius: 1ex 0 0 0;
+}
+label  {
+  width: 50%; min-width: 100px;
+  border-style: solid solid none none;
+  background-color: #EEF;
+  border-radius: 0 1ex 0 0;
+}
+
+.tabcontent {
+  color: #000;
+  background-color: #EEF;
+  border-color: #000;
+  border-width: 1px;
+  border-radius: 0 1ex 1ex 1ex;
+  margin: 0;
+  padding: 1ex 1ex;
+}
+.tabcontent pre { margin: 1em 0;}
+    -->
+    </style>
+</head>
+<body>
+<h1>Videorooter algorithm stats</h1>
+<dl class="buildinfo">
+  <dt>Last run: </dt><dd>$runtime</dd>
+</dl>
+<h2>Information</h2>
+<input type="checkbox" class="tabhandle" id="overview_tab" 
+><label class="filled" for="overview_tab"></label>
+<div class="tabcontent">
+<p>This is the algorithm test page of Videorooter. It runs regularly
+against a number of repositories and branches with different versions
+of the blockhash code for videos.</p>
+<p>Each repository is retrieved at its most recent revision and two tests
+are performed for each: a test across 100 unique videos to determine the
+accuracy of the algorithm in question, and a test across ca 3800 images
+to determine the false positives.</p>
+<p>Roughly, the first test says how accurate the algorithm is, while the
+second says how often it fails.</p>
+<strong>Accuracy test</strong>
+<p>The accuracy test compares 100 videos against the same videos recoded
+into various other formats, with different bitrates, compression, framerates
+and so on. The formats are (corresponding to each row in the table "Hamming dist
+ance" below):</p>
+<ol>
+ <li>mpeg1video, yuv420p(tv), 352x240 [SAR 1:1 DAR 22:15], 1150 kb/s, 29.97 fps, 29.97 tbr, 90k tbn, 29.97 tbc (bitrate: 1391 kb/s)</li>
+ <li>vp8, yuv420p, 400x300, SAR 1:1 DAR 4:3, 29.97 fps, 29.97 tbr, 1k tbn, 1k tbc (bitrate: 1056 kb/s)</li>
+ <li>vp8, yuv420p, 400x300, SAR 1:1 DAR 4:3, 29.97 fps, 29.97 tbr, 1k tbn, 1k tbc (bitrate: 159 kb/s)</li>
+ <li>h264 (High), yuv420p, 400x300, SAR 1:1 DAR 4:3, 29.97 fps, 29.97 tbr, 1k tbn, 59.94 tbc (bitrate: 645 kb/s)</li>
+ <li>mpeg2video (Main), yuv420p(tv), 480x480 [SAR 1:1 DAR 1:1], max. 2516 kb/s, 23.98 fps, 23.98 tbr, 90k tbn, 47.95 tbc (bitrate: 558 kb/s)</li>
+ <li>mpeg1video, yuv420p(tv), 160x120 [SAR 1:1 DAR 4:3], 104857 kb/s, 29.97 fps, 29.97 tbr, 90k tbn, 29.97 tbc (bitrate: 242 kb/s)</li>
+ <li>mpeg1video, yuv420p(tv), 320x240 [SAR 1:1 DAR 4:3], 104857 kb/s, 29.97 fps, 29.97 tbr, 90k tbn, 29.97 tbc (bitrate: 243 kb/s)</li>
+ <li>h264 (Constrained Baseline) (H264 / 0x34363248), yuv420p, 480x360, 249 kb/s, 29.97 fps, 29.97 tbr, 29.97 tbn, 59.94 tbc (bitrate: 360 kb/s)</li>
+</ol>
+<p>
+Row 9 and 10 are not used in any calculation but used just for comparison. They 
+represent a test with non-verbatim copies of video files, with 1s and 2s respect
+ively cut from the beginning of the video.</p>
+<strong>Threshold</strong>
+The accuracy, as well as false positives, is calculated with a number of differe
+nt thresholds, from 10 to 50. The threshold value determines how many bits
+two hashes are allowed to differ for two videos to be considered the same.
+With a low threshold, one can expect a lower accuracy, but that
+there will be fewer false positives. With a higher threshold, one can expect
+a higher accuracy, at the cost of more false positives. Which threshold to
+use in an application depends on an evaluation of those parameters.</p>
+<strong>False positives</strong>
+<p>The test for false positives involve calculating the fingerprint for ca 3800 
+videos. Half of the videos are from OpenImages and the other half from Wikimedia
+ Commons.</p>
+<p>Each fingerprint is then compared to every other fingerprint, and if the 
+distance between them are less than the threshold, they are considered to be
+the same. It is believed that the set of videos have unique videos, which
+means that every match that is made is false. That then indicates a false positi
+ve: two videos that are not the same, but are deemed to be the same by the algor
+ithm.</p>
+<p>The false positive rate is the likelihood that any single video
+evaluated will result in one or more false positive matches.</p>
+</div>
+$content
+</body>
+</html>

@@ -74,8 +74,8 @@ for pair in hashes_a:
           matches[i][filenames[pair[0]][0]] = 1
           matches[i][filenames[pair[1]][0]] = 1
 
-print("\n * Cross compare for false positives (%d pairs, OpenImages+WM set)\n" % len(hashes_a))
+print("\n * Cross compare for false positives (%d pairs)\n" % len(hashes_a))
 
 for i in sorted(matches.keys()):
-  print("t=%d   Matches: %d (%2.2f%%)" % (i, len(matches[i]), len(matches[i])/len(lhashes)*100))
+  print("CC  t=%d  %2.2f%% (%d matches)" % (i, len(matches[i])/len(lhashes)*100, len(matches[i])))
 

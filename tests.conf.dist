@@ -2,3 +2,4 @@
 username=<username>
 password=<password>
 cachepath=data/cache
+outpath=data/out
