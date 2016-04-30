@@ -112,29 +112,34 @@ for i in derived_branches:
     continue
   if os.path.isfile("%s/%s" % (config.get('tests', 'cachepath'), i['sha'])):
     f = open("%s/%s" % (config.get('tests', 'cachepath'), i['sha']))
-    acc = {}
-    cc = {}
-    best_result = 0
-    best_t = 0
+    acc = {'IMAGE': {}, 'MOVIE': {}}
+    cc = {'IMAGE': {}, 'MOVIE': {}}
+    best_result = {'IMAGE': 0, 'MOVIE': 0}
+    best_t = {'IMAGE': 0, 'MOVIE': 0}
+
     for line in f:
       if 'ACC' in line:
          l = line.split()
-         acc[int(l[1].strip('t').strip('='))] = float(l[2].strip('%'))
+         acc[l[0]][int(l[2].strip('t').strip('='))] = float(l[3].strip('%'))
       elif 'CC' in line:
          l = line.split()
-         cc[int(l[1].strip('t').strip('='))] = float(l[2].strip('%'))
-    for j in acc:
-       if (acc[j]-cc[j]) > best_result:
-          best_result = acc[j]-cc[j]
-          best_t = j
+         cc[l[0]][int(l[2].strip('t').strip('='))] = float(l[3].strip('%'))
+
+    for foo in acc.keys():
+      for j in acc[foo]:
+         if (acc[foo][j]-cc[foo][j]) > best_result[foo]:
+            best_result[foo] = acc[foo][j]-cc[foo][j]
+            best_t[foo] = j
     f.seek(0)
 
     template = open('tmpl/test.html.tmpl')
     src = Template(template.read())
     subst = { 'testname': "%s/%s" % (i['base'], i['branch']),
               'id': i['sha'], 
-              'result': best_result,
-              't': best_t,
+              'result_i': best_result['IMAGE'],
+              't_i': best_t['IMAGE'],
+              'result_m': best_result['MOVIE'],
+              't_m': best_t['MOVIE'],
               'output': f.read() }
     f.close()
     i['output'] = src.substitute(subst)

@@ -33,6 +33,8 @@ parser.add_argument('--step', default=5, type=int,
                    help='hamming distance step')
 parser.add_argument('--pairs', type=argparse.FileType('w'),
                    help='output list of matching pairs')
+parser.add_argument('--test', default="IMAGE",
+                   help='name of the test (if any)')
 
 args = parser.parse_args()
 
@@ -74,8 +76,8 @@ for pair in hashes_a:
           matches[i][filenames[pair[0]][0]] = 1
           matches[i][filenames[pair[1]][0]] = 1
 
-print("\n * Cross compare for false positives (%d pairs)\n" % len(hashes_a))
+print("\n * %s Cross compare for false positives (%d pairs)\n" % (args.test, len(hashes_a)))
 
 for i in sorted(matches.keys()):
-  print("CC  t=%d  %2.2f%% (%d matches)" % (i, len(matches[i])/len(lhashes)*100, len(matches[i])))
+  print("%s CC  t=%d  %2.2f%% (%d matches)" % (args.test, i, len(matches[i])/len(lhashes)*100, len(matches[i])))
 

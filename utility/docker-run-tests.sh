@@ -28,7 +28,7 @@ if test $images -eq 1; then
   # Run the actual crosscompare for false positives and output
   # the results.
   #
-  cat $$.in | /util/crosscompare.py --max 15 --step 1 >> $logfile
+  cat $$.in | /util/crosscompare.py --max 20 --step 1 --test "IMAGE" >> $logfile
 
   rm -f $$.in
 
@@ -36,6 +36,33 @@ if test $images -eq 1; then
     calc image $img >> $$.in
   done
 
-  cat $$.in|/util/makecsv.py >> $logfile
+  cat $$.in|/util/makecsv.py --max 20 --step 1 --verbatim 13 --test "IMAGE" >> $logfile
+  rm -f $$.in
+fi
+
+
+if test $movies -eq 1; then
+  #
+  find /data/movies/lg -type f | while read img; do
+    calc movie $img >> $$.in
+  done
+
+  #
+  # Run the actual crosscompare for false positives and output
+  # the results.
+  
+  cat $$.in | /util/crosscompare.py --test="MOVIE" >> $logfile
+
+  rm -f $$.in
+
+  for video in `find /data/movies/[0-9]* -maxdepth 4 -name "*.mpeg" -o \
+                                      -name "*.avi" -o \
+                                      -name "*.webm" -o \
+                                      -name "*.mkv" -o \
+                                      -name "*.ogv" | sort -f`; do
+    calc movie $video >> $$.in
+  done
+
+  cat $$.in|/util/makecsv.py --verbatim 9 --test="MOVIE" >> $logfile
   rm -f $$.in
 fi

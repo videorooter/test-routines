@@ -16,6 +16,7 @@ cd utility/docker
 sudo docker build -t cm/$sha .
 sudo docker run -v $pwd/data/:/data:ro -v $pwd/src/:/src \
                 -v $pwd/utility/:/util:ro \
+                --net=none \
                 cm/$sha /util/docker-run-tests.sh $repo $branch
 
 rm -rf src
